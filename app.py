@@ -10,7 +10,7 @@ except:
     st.error("La clé API n'est pas configurée dans les Secrets Streamlit.")
 
 # On définit le modèle (le cerveau)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-pro')
 
 # 2. CONFIGURATION DE LA PAGE
 st.set_page_config(page_title="Mon Suivi Fitness", page_icon="💪")
