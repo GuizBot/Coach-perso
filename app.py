@@ -20,7 +20,8 @@ except Exception as e:
 # B. Connexion à l'IA
 try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-    model = genai.GenerativeModel('models/gemini-2.0-flash')
+    # On utilise Gemini 3 Pro Preview pour plus de raisonnement
+model = genai.GenerativeModel('models/gemini-3-pro-preview')
 except Exception as e:
     st.error(f"Erreur IA : {e}")
 
