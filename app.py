@@ -45,21 +45,32 @@ with tab1:
 
 # --- ONGLET NUTRITION ---
 with tab2:
-    st.header("Suivi Repas")
-    repas = st.text_area("Qu'as-tu mangé ?", placeholder="Ex: Omelette 3 oeufs, 100g riz...")
+    st.header("Saisie Macros (depuis Yazio)")
     
-    if st.button("Analyser ce repas"):
-        # On envoie direct à l'IA pour analyse
-        try:
-            prompt_repas = f"Analyse nutritionnelle approximative (cal/prot) pour : {repas}. Sois très bref (format liste)."
-            response = model.generate_content(prompt_repas)
-            st.info(response.text)
-            
-            # On ajoute à la mémoire
-            st.session_state.messages.append({"role": "user", "parts": [f"J'ai mangé : {repas}"]})
-            st.session_state.messages.append({"role": "model", "parts": [response.text]})
-        except Exception as e:
-            st.error(f"Erreur lors de l'analyse : {e}")
+    # On crée deux colonnes pour que ce soit plus joli
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        calories = st.number_input("🔥 Calories (kcal)", min_value=0, step=10)
+        proteines = st.number_input("🥩 Protéines (g)", min_value=0, step=1)
+    
+    with col2:
+        glucides = st.number_input("🍚 Glucides (g)", min_value=0, step=1)
+        lipides = st.number_input("🥑 Lipides (g)", min_value=0, step=1)
+    
+    if st.button("Valider les macros"):
+        # On crée une phrase résumé pour l'IA
+        infos_macros = (f"Mise à jour nutrition : {calories} kcal | "
+                        f"Protéines: {proteines}g | "
+                        f"Glucides: {glucides}g | "
+                        f"Lipides: {lipides}g")
+        
+        st.success("✅ Macros enregistrées !")
+        
+        # On injecte l'info dans le cerveau de l'IA
+        st.session_state.messages.append({"role": "user", "parts": [infos_macros]})
+        # On force une petite réponse de validation de l'IA pour l'historique
+        st.session_state.messages.append({"role": "model", "parts": ["Bien reçu, j'ai pris en compte tes macros."]})
 
 # --- ONGLET IA (CHAT) ---
 with tab3:
