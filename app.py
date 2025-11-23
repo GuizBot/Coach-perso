@@ -7,16 +7,17 @@ from datetime import datetime
 st.set_page_config(page_title="Mon Suivi Fitness", page_icon="💪")
 st.title("💪 Mon Coach Personnel")
 
-# A. Connexion à Google Sheets (Le Mémoire)
+# A. Connexion à Google Sheets (Diagnostic)
 try:
     gc = gspread.service_account_from_dict(st.secrets["gsheets"])
-    sh = gc.open("Suivi Fitness") # Le nom de ton fichier sur Drive
+    sh = gc.open("Suivi Fitness")
     worksheet = sh.sheet1
+    st.success("✅ Connexion au Google Sheet réussie !") 
 except Exception as e:
-    st.error("⚠️ Erreur de connexion au Google Sheet.")
-    st.warning("As-tu bien partagé le fichier 'Suivi Fitness' avec l'email du robot ?")
+    st.error(f"❌ Erreur technique : {e}")
+    st.info("Vérifie bien que le fichier s'appelle 'Suivi Fitness' et qu'il est partagé avec le mail du robot.")
     st.stop()
-
+    
 # B. Connexion à l'IA (Le Cerveau)
 try:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
